@@ -148,11 +148,13 @@
     <ClCompile Include="MessagingSystem.cpp" />
     <ClCompile Include="Paddle.cpp" />
     <ClCompile Include="PowerupBase.cpp" />
+    <ClCompile Include="PowerupBigBall.cpp" />
     <ClCompile Include="PowerupBigPaddle.cpp" />
     <ClCompile Include="PowerupFastBall.cpp" />
     <ClCompile Include="PowerupFireBall.cpp" />
     <ClCompile Include="PowerupManager.cpp" />
     <ClCompile Include="PowerupSlowBall.cpp" />
+    <ClCompile Include="PowerupSmallBall.cpp" />
     <ClCompile Include="PowerupSmallPaddle.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="UI.cpp" />
@@ -166,11 +168,13 @@
     <ClInclude Include="MessagingSystem.h" />
     <ClInclude Include="Paddle.h" />
     <ClInclude Include="PowerupBase.h" />
+    <ClInclude Include="PowerupBigBall.h" />
     <ClInclude Include="PowerupBigPaddle.h" />
     <ClInclude Include="PowerupFastBall.h" />
     <ClInclude Include="PowerupFireBall.h" />
     <ClInclude Include="PowerupManager.h" />
     <ClInclude Include="PowerupSlowBall.h" />
+    <ClInclude Include="PowerupSmallBall.h" />
     <ClInclude Include="PowerupSmallPaddle.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="UI.h" />

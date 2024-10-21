@@ -1,5 +1,6 @@
 #include "SoundManager.h"
 #include <iostream>
+
 SoundManager::SoundManager()
 {
 	sf::SoundBuffer tempBuffer;
@@ -27,10 +28,10 @@ SoundManager::~SoundManager()
 
 void SoundManager::playSound(SOUNDS sound)
 {
+	// Find sound to play within game sounds map
 	if (_gameSounds.find(sound) != _gameSounds.end())
 	{
-		_soundToPlay.setBuffer(_gameSounds[sound]);
-		_soundToPlay.play();
-		std::cout << "sound play";
+		_soundToPlay.setBuffer(_gameSounds[sound]); // Set sound buffer
+		_soundToPlay.play(); // Play sound
 	}
 }

@@ -55,4 +55,5 @@ private:
     static constexpr float PAUSE_TIME_BUFFER = 0.5f;
     static constexpr float GAME_OVER_TIME_BUFFER = 3.5f;
     static constexpr float POWERUP_FREQUENCY = 7.5f;    // time between minimum powerup spawn
+    static constexpr int SPAWN_CHANCE = 700;
 };

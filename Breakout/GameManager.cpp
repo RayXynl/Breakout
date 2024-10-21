@@ -17,10 +17,14 @@ GameManager::GameManager(sf::RenderWindow* window)
 
 void GameManager::initialize()
 {
+    // Starting num lives
+    _lives = 3;
+    _levelComplete = false;
+
     _paddle = new Paddle(_window);
     _brickManager = new BrickManager(_window, this);
     _messagingSystem = new MessagingSystem(_window);
-    _ball = new Ball(_window, 400.0f, this); 
+    _ball = new Ball(_window, 400.0f, 10.f, this); 
     _powerupManager = new PowerupManager(_window, _paddle, _ball, this);
     _ui = new UI(_window, _lives, this);
     _soundManager = new SoundManager();
@@ -33,8 +37,6 @@ void GameManager::update(float dt)
 {
     _powerupInEffect = _powerupManager->getPowerupInEffect();
 
-   
-
     _ui->updatePowerupText(_powerupInEffect);
     _ui->updatePowerupProgressBar(_powerupInEffect);
     _powerupInEffect.second -= dt;
@@ -42,12 +44,24 @@ void GameManager::update(float dt)
 
     if (_lives <= 0)
     {
-        return;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+        {
+            _masterText.setString("");
+            initialize();
+        }
+        else
+            return;
     }
     if (_levelComplete)
     {
-        _masterText.setString("Level completed.");
-        return;
+        _masterText.setString("Level completed. \n Press Spacebar to start again");
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+        {
+            _masterText.setString("");
+            initialize();
+        }
+        else
+            return;
     }
   
     pauseHandling(dt);
@@ -60,7 +74,7 @@ void GameManager::update(float dt)
     // timer.
     _time += dt;
 
-    if (_time > _timeLastPowerupSpawned + POWERUP_FREQUENCY && rand()%700 == 0)      // TODO parameterise
+    if (_time > _timeLastPowerupSpawned + POWERUP_FREQUENCY && rand() % SPAWN_CHANCE == 0) 
     {
         _powerupManager->spawnPowerup();
         _timeLastPowerupSpawned = _time;
@@ -116,7 +130,7 @@ void GameManager::loseLife()
     if (_lives <= 0)
     {
         _soundManager->playSound(gameOver);
-        _masterText.setString("Game over.");
+        _masterText.setString("Game over. \n Press Spacebar to start again");
     }
 }
 

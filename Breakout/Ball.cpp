@@ -2,8 +2,8 @@
 #include "GameManager.h" // avoid cicular dependencies
 #include <iostream>
 
-Ball::Ball(sf::RenderWindow* window, float velocity, GameManager* gameManager)
-    : _window(window), _velocity(velocity), _gameManager(gameManager),
+Ball::Ball(sf::RenderWindow* window, float velocity, float radius, GameManager* gameManager)
+    : _window(window), _velocity(velocity), _radius(radius), _gameManager(gameManager),
     _timeWithPowerupEffect(0.f), _isFireBall(false), _isAlive(true), _direction({1,1})
 {
     _sprite.setRadius(RADIUS);
@@ -26,6 +26,11 @@ void Ball::update(float dt)
     {
         if (_velocity != VELOCITY)
             _velocity = VELOCITY;   // reset speed.
+        else if (_radius != RADIUS)
+        {
+            _radius = RADIUS; // reset radius
+            _sprite.setRadius(_radius);
+        }
         else
         {
             setFireBall(0);    // disable fireball
@@ -50,7 +55,7 @@ void Ball::update(float dt)
     sf::Vector2u windowDimensions = _window->getSize();
 
     // bounce on walls
-    if ((position.x >= windowDimensions.x - 2 * RADIUS && _direction.x > 0) || (position.x <= 0 && _direction.x < 0))
+    if ((position.x >= windowDimensions.x - 2 * _radius && _direction.x > 0) || (position.x <= 0 && _direction.x < 0))
     {
         _direction.x *= -1;
     }
@@ -72,14 +77,13 @@ void Ball::update(float dt)
     // collision with paddle
     if (_sprite.getGlobalBounds().intersects(_gameManager->getPaddle()->getBounds()))
     {
-        std::cout << "Ball collided with paddle." << std::endl; // Log collision
-        _gameManager->getSoundManager()->playSound(paddleBounce);
+        _gameManager->getSoundManager()->playSound(paddleBounce); // Play paddle bounce sound
         _direction.y *= -1; // Bounce vertically
         float paddlePositionProportion = (_sprite.getPosition().x - _gameManager->getPaddle()->getBounds().left) / _gameManager->getPaddle()->getBounds().width;
         _direction.x = paddlePositionProportion * 2.0f - 1.0f;
 
         // Adjust position to avoid getting stuck inside the paddle
-        _sprite.setPosition(_sprite.getPosition().x, _gameManager->getPaddle()->getBounds().top - 2 * RADIUS);
+        _sprite.setPosition(_sprite.getPosition().x, _gameManager->getPaddle()->getBounds().top - 2 * _radius);
     }
 
     // collision with bricks
@@ -108,6 +112,12 @@ void Ball::setVelocity(float coeff, float duration)
     _timeWithPowerupEffect = duration;
 }
 
+void Ball::setRadius(float radius, float duration)
+{
+    _radius = radius;
+    _timeWithPowerupEffect = duration;
+    _sprite.setRadius(_radius);
+}
 void Ball::setFireBall(float duration)
 {
     if (duration) 
