@@ -1,5 +1,6 @@
 #include "Ball.h"
 #include "GameManager.h" // avoid cicular dependencies
+#include <iostream>
 
 Ball::Ball(sf::RenderWindow* window, float velocity, GameManager* gameManager)
     : _window(window), _velocity(velocity), _gameManager(gameManager),
@@ -31,6 +32,7 @@ void Ball::update(float dt)
             _sprite.setFillColor(sf::Color::Cyan);  // back to normal colour.
         }        
     }
+
 
     // Fireball effect
     if (_isFireBall)
@@ -70,8 +72,9 @@ void Ball::update(float dt)
     // collision with paddle
     if (_sprite.getGlobalBounds().intersects(_gameManager->getPaddle()->getBounds()))
     {
+        std::cout << "Ball collided with paddle." << std::endl; // Log collision
+        _gameManager->getSoundManager()->playSound(paddleBounce);
         _direction.y *= -1; // Bounce vertically
-
         float paddlePositionProportion = (_sprite.getPosition().x - _gameManager->getPaddle()->getBounds().left) / _gameManager->getPaddle()->getBounds().width;
         _direction.x = paddlePositionProportion * 2.0f - 1.0f;
 
@@ -85,10 +88,12 @@ void Ball::update(float dt)
     if (collisionResponse == 1)
     {
         _direction.x *= -1; // Bounce horizontally
+     
     }
     else if (collisionResponse == 2)
     {
         _direction.y *= -1; // Bounce vertically
+     
     }
 }
 

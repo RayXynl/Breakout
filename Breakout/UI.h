@@ -14,6 +14,7 @@ public:
 	~UI();
 
 	void updatePowerupText(std::pair<POWERUPS, float>);
+	void updatePowerupProgressBar(std::pair<POWERUPS, float>);
 	void lifeLost(int lives);
 	void render();
 
@@ -25,8 +26,13 @@ private:
 	sf::Text _powerupText;
 
 	std::vector<sf::CircleShape> _lives;
+	sf::RectangleShape _progressBar;
+
+
 
 	static constexpr float LIFE_RADIUS = 15.0f;
 	static constexpr float LIFE_PADDING = 20.0f;
+	static constexpr float PROGRESSBAR_WIDTH = 200.0f;
+	static constexpr float PROGRESSBAR_HEIGHT = 35.0f;
 };
 

@@ -20,8 +20,18 @@ UI::UI(sf::RenderWindow* window, int lives, GameManager* gameManager)
 	_powerupText.setCharacterSize(30);
 	_powerupText.setPosition(800, 10);
 	_powerupText.setFillColor(sf::Color::Cyan);
+	_powerupText.setOutlineColor(sf::Color::Black);
+	_powerupText.setOutlineThickness(1.0f);
 	_font.loadFromFile("font/montS.ttf");
 	_powerupText.setFont(_font);
+
+	_progressBar.setPosition(780, 10);
+	_progressBar.setSize(sf::Vector2f(PROGRESSBAR_WIDTH, PROGRESSBAR_HEIGHT));
+	_progressBar.setFillColor(sf::Color::Red);
+	_progressBar.setOutlineColor(sf::Color::White);
+	_progressBar.setOutlineThickness(1.0f);
+
+
 }
 
 UI::~UI()
@@ -67,6 +77,38 @@ void UI::updatePowerupText(std::pair<POWERUPS, float> powerup)
 	}
 }
 
+void UI::updatePowerupProgressBar(std::pair<POWERUPS, float> powerup)
+{
+	switch (powerup.first)
+	{
+	case bigPaddle:
+	
+		_progressBar.setSize(sf::Vector2f(PROGRESSBAR_WIDTH * powerup.second / 5.0f, PROGRESSBAR_HEIGHT));
+		_progressBar.setFillColor(paddleEffectsColour);
+		break;
+	case smallPaddle:
+		_progressBar.setSize(sf::Vector2f(PROGRESSBAR_WIDTH * powerup.second / 5.0f, PROGRESSBAR_HEIGHT));
+		_progressBar.setFillColor(paddleEffectsColour);
+		break;
+	case slowBall:
+		_progressBar.setSize(sf::Vector2f(PROGRESSBAR_WIDTH * powerup.second / 5.0f, PROGRESSBAR_HEIGHT));
+		_progressBar.setFillColor(ballEffectsColour);
+		break;
+	case fastBall:
+		_progressBar.setSize(sf::Vector2f(PROGRESSBAR_WIDTH * powerup.second / 5.0f, PROGRESSBAR_HEIGHT));
+		_progressBar.setFillColor(ballEffectsColour);
+		break;
+	case fireBall:
+		_progressBar.setSize(sf::Vector2f(PROGRESSBAR_WIDTH * powerup.second / 5.0f, PROGRESSBAR_HEIGHT));
+		_progressBar.setFillColor(extraBallEffectsColour);
+		break;
+	case none:
+		_progressBar.setSize(sf::Vector2f(PROGRESSBAR_WIDTH, PROGRESSBAR_HEIGHT));
+		_progressBar.setFillColor(sf::Color::Black);
+		break;
+	}
+}
+
 void UI::lifeLost(int lives)
 {
 	_lives[_lives.size() - 1 - lives].setFillColor(sf::Color::Transparent);
@@ -74,9 +116,11 @@ void UI::lifeLost(int lives)
 
 void UI::render()
 {
+	_window->draw(_progressBar);
 	_window->draw(_powerupText);
 	for (sf::CircleShape life : _lives)
 	{
 		_window->draw(life);
 	}
+	
 }

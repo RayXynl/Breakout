@@ -7,6 +7,7 @@
 #include "PowerupManager.h"
 #include "MessagingSystem.h"
 #include "UI.h"
+#include "SoundManager.h"
 
 
 
@@ -16,6 +17,7 @@ public:
     void initialize();
     void update(float dt);
     void loseLife();
+    void pauseHandling(float dt);
     void render();
     void levelComplete();
     void powerupEffect(POWERUPS pu, float t);
@@ -25,12 +27,14 @@ public:
     PowerupManager* getPowerupManager() const;
     sf::RenderWindow* getWindow() const;
     UI* getUI() const;
+    SoundManager* getSoundManager() const;
 
 
 private:
     bool _pause;
     float _pauseHold;
     float _time;
+    float _gameOverTime;
     float _timeLastPowerupSpawned;
     int _lives;
     bool _levelComplete;
@@ -46,7 +50,9 @@ private:
     PowerupManager* _powerupManager;
     MessagingSystem* _messagingSystem;
     UI* _ui;
+    SoundManager* _soundManager;
 
     static constexpr float PAUSE_TIME_BUFFER = 0.5f;
+    static constexpr float GAME_OVER_TIME_BUFFER = 3.5f;
     static constexpr float POWERUP_FREQUENCY = 7.5f;    // time between minimum powerup spawn
 };

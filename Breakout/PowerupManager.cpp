@@ -1,9 +1,11 @@
 #include "PowerupManager.h"
+#include "GameManager.h" // avoid cicular dependencies
+#include "CONSTANTS.h"
 
-
-PowerupManager::PowerupManager(sf::RenderWindow* window, Paddle* paddle, Ball* ball)
-    : _window(window), _paddle(paddle), _ball(ball)
+PowerupManager::PowerupManager(sf::RenderWindow* window, Paddle* paddle, Ball* ball, GameManager* gameManager)
+    : _window(window), _paddle(paddle), _ball(ball), _gameManager(gameManager)
 {
+ 
 }
 
 PowerupManager::~PowerupManager()
@@ -83,13 +85,13 @@ void PowerupManager::spawnPowerup()
 
 void PowerupManager::checkCollision()
 {
-    for (auto& powerup : _powerups)
+    for (auto& powerups : _powerups)
     {
-
-        if (powerup->checkCollisionWithPaddle())
+        if (powerups->checkCollisionWithPaddle())
         {
-            _powerupInEffect = powerup->applyEffect();
-            powerup->setAlive(false);
+            _powerupInEffect = powerups->applyEffect();
+            powerups->setAlive(false);
+            _gameManager->getSoundManager()->playSound(powerup);
         }
     }
 }
