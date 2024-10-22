@@ -33,3 +33,15 @@ fire ball (green)
 
 # Time Details and Changelist
 <Add information to this section about the time you've taken for this task along with a professional changelist.>
+
+Task 1 - Fixed Compiler issue - removed circular dependency between fireball powerup class and powerup base class which was causing base class undefined error = 5 minutes
+Task 2 - Implemented mouse input for paddle where the center of the paddle will move to the mouse's x position using the same speed variable as the keyboard input = 20 minutes
+Task 3 - Moved and simplified pause functionality within its own function in game manager class = 5 minutes
+Task 4 - Added screen shake effect after losing life = 12 minutes
+Task 5 - Added progress bar for powerups, maintaining individual colours for each powerup = 22 minutes
+Task 6 - Added sound manager class to play sounds for brick breaking, paddle collisions with the ball, losing a life and game over. Sound manager maintains scalability of the class. 	Sounds are stored using a map which can be added to using an Enum as the key = 1hr 40 minutes
+Task 7 - Added replay ability after either losing or winning, space-bar can be pressed to restart the level = 10 minutes
+Task 8 - Added big ball power up, ensured all UI display as it does with the other implemented powerups and adjusted the collision responses to account for greater circle radius. = 24 minutes
+Task 9 - Added small ball power up consistent with implementation of big ball power up = 5 minutes
+Task 10 - Added trail to ball, the trail is a vector of sf::CircleShapes that follow the ball, these shapes are updated with the speed and radius changes when the relevant powerups are activated = 25 minutes
+Task 11 - Added explosive ball power up, finds the distance between hit brick and other bricks and assesses if it is within the explosion radius, if so the brick is removed along with the hit brick = 1 hr 40 minutes
