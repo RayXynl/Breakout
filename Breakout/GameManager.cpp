@@ -13,18 +13,24 @@ GameManager::GameManager(sf::RenderWindow* window)
     _masterText.setPosition(50, 400);
     _masterText.setCharacterSize(48);
     _masterText.setFillColor(sf::Color::Yellow);
+
+    // Background
+    _backgroundTexture.loadFromFile("william.jpg");
+    _spriteBackground.setTexture(_backgroundTexture);
+    _spriteBackground.setScale(sf::Vector2f(2.0f, 3.0f));
+    
 }
 
 void GameManager::initialize()
 {
-    // Starting num lives
-    _lives = 3;
+    _lives = INITIAL_LIVES;
     _levelComplete = false;
+    _powerupInEffect = { none, 0.0f };
 
     _paddle = new Paddle(_window);
     _brickManager = new BrickManager(_window, this);
     _messagingSystem = new MessagingSystem(_window);
-    _ball = new Ball(_window, 400.0f, 10.f, this); 
+    _ball = new Ball(_window, BALL_SPEED, BALL_RADIUS, this); 
     _powerupManager = new PowerupManager(_window, _paddle, _ball, this);
     _ui = new UI(_window, _lives, this);
     _soundManager = new SoundManager();
@@ -41,9 +47,10 @@ void GameManager::update(float dt)
     _ui->updatePowerupProgressBar(_powerupInEffect);
     _powerupInEffect.second -= dt;
     
-
+    // Lives check
     if (_lives <= 0)
     {
+        // Check for input to restart level
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
         {
             _masterText.setString("");
@@ -52,9 +59,13 @@ void GameManager::update(float dt)
         else
             return;
     }
+
     if (_levelComplete)
     {
         _masterText.setString("Level completed. \n Press Spacebar to start again");
+        _masterText.setFillColor(sf::Color::Green);
+
+        // Check for input to restart level
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
         {
             _masterText.setString("");
@@ -64,6 +75,7 @@ void GameManager::update(float dt)
             return;
     }
   
+    // Check for pause input
     pauseHandling(dt);
 
     if (_pause)
@@ -131,11 +143,13 @@ void GameManager::loseLife()
     {
         _soundManager->playSound(gameOver);
         _masterText.setString("Game over. \n Press Spacebar to start again");
+        _masterText.setFillColor(sf::Color::Red);
     }
 }
 
 void GameManager::render()
 {
+    _window->draw(_spriteBackground);
     _paddle->render();
     _ball->render();
     _brickManager->render();

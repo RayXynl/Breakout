@@ -78,6 +78,11 @@ void UI::updatePowerupText(std::pair<POWERUPS, float> powerup)
 		_powerupText.setString("small ball " + oss.str());
 		_powerupText.setFillColor(extraBallEffectsColour);
 		break;
+	case explosiveBall:
+		oss << std::fixed << std::setprecision(2) << powerup.second;
+		_powerupText.setString("explosive ball " + oss.str());
+		_powerupText.setFillColor(extraBallEffectsColour);
+		break;
 	case none:
 		_powerupText.setString("");
 		break;
@@ -114,6 +119,10 @@ void UI::updatePowerupProgressBar(std::pair<POWERUPS, float> powerup)
 		_progressBar.setFillColor(extraBallEffectsColour);
 		break;	
 	case smallBall:
+		_progressBar.setSize(sf::Vector2f(PROGRESSBAR_WIDTH * powerup.second / 5.0f, PROGRESSBAR_HEIGHT));
+		_progressBar.setFillColor(extraBallEffectsColour);
+		break;
+	case explosiveBall:
 		_progressBar.setSize(sf::Vector2f(PROGRESSBAR_WIDTH * powerup.second / 5.0f, PROGRESSBAR_HEIGHT));
 		_progressBar.setFillColor(extraBallEffectsColour);
 		break;

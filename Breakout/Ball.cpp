@@ -9,6 +9,15 @@ Ball::Ball(sf::RenderWindow* window, float velocity, float radius, GameManager* 
     _sprite.setRadius(RADIUS);
     _sprite.setFillColor(sf::Color::Cyan);
     _sprite.setPosition(0, 300);
+
+    for (int i = 0; i < 5; i++)
+    {
+        sf::CircleShape tempCircle;
+        tempCircle.setRadius(RADIUS);
+        tempCircle.setFillColor(sf::Color(255, 0, 255, 64));
+        tempCircle.setPosition(0, 300);
+        _ballTrail.push_back(tempCircle);
+    }
 }
 
 Ball::~Ball()
@@ -30,6 +39,10 @@ void Ball::update(float dt)
         {
             _radius = RADIUS; // reset radius
             _sprite.setRadius(_radius);
+            for (int i = 0; i < _ballTrail.size(); i++)
+            {
+                _ballTrail[i].setRadius(_radius);
+            }
         }
         else
         {
@@ -49,6 +62,17 @@ void Ball::update(float dt)
 
     // Update position with a subtle floating-point error
     _sprite.move(_direction * _velocity * dt);
+
+    if (!_ballTrail.empty())
+        _ballTrail.front().setPosition(_sprite.getPosition());
+
+    for (int i = 1; i < _ballTrail.size(); i++)
+    {
+        sf::Vector2f lastBallPos = _ballTrail[i - 1].getPosition();
+        sf::Vector2f currentBallPos = _ballTrail[i].getPosition();
+
+        _ballTrail[i].move((lastBallPos - currentBallPos) * (_velocity * 0.07f) * dt);
+    }
 
     // check bounds and bounce
     sf::Vector2f position = _sprite.getPosition();
@@ -103,6 +127,10 @@ void Ball::update(float dt)
 
 void Ball::render()
 {
+    for (int i = 0; i < _ballTrail.size(); i++)
+    {
+        _window->draw(_ballTrail[i]); 
+    }
     _window->draw(_sprite);
 }
 
@@ -117,6 +145,10 @@ void Ball::setRadius(float radius, float duration)
     _radius = radius;
     _timeWithPowerupEffect = duration;
     _sprite.setRadius(_radius);
+
+    for (auto& trails :_ballTrail)
+        trails.setRadius(_radius);
+    
 }
 void Ball::setFireBall(float duration)
 {

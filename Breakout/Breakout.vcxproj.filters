@@ -72,6 +72,9 @@
     <ClCompile Include="PowerupSmallBall.cpp">
       <Filter>Powerups</Filter>
     </ClCompile>
+    <ClCompile Include="PowerupExplosiveBall.cpp">
+      <Filter>Powerups</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ball.h">
@@ -126,6 +129,9 @@
       <Filter>Powerups</Filter>
     </ClInclude>
     <ClInclude Include="PowerupSmallBall.h">
+      <Filter>Powerups</Filter>
+    </ClInclude>
+    <ClInclude Include="PowerupExplosiveBall.h">
       <Filter>Powerups</Filter>
     </ClInclude>
   </ItemGroup>

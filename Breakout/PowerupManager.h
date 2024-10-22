@@ -11,6 +11,7 @@
 #include "PowerupFireBall.h"
 #include "PowerupBigBall.h"
 #include "PowerupSmallBall.h"
+#include "PowerupExplosiveBall.h"
 #include "Paddle.h"
 #include "Ball.h"
 

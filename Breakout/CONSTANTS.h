@@ -10,6 +10,7 @@ enum POWERUPS
     fireBall,
     bigBall,
     smallBall,
+    explosiveBall,
     none
 };
 
@@ -21,6 +22,7 @@ enum SOUNDS
     paddleBounce,
     brickBreak
 };
+
 // Window settings
 constexpr unsigned int WINDOW_WIDTH = 800;
 constexpr unsigned int WINDOW_HEIGHT = 600;
@@ -45,6 +47,8 @@ constexpr int BRICK_COLUMNS = 10;
 // Power-up settings
 constexpr float POWERUP_RADIUS = 15.0f;
 constexpr float POWERUP_SPEED = 150.0f;
+
+constexpr float EXPLOSION_RADIUS = 90.0f;
 
 // UI settings
 constexpr float UI_LIFE_RADIUS = 15.0f;

@@ -32,10 +32,16 @@ void BrickManager::render()
 
 int BrickManager::checkCollision(sf::CircleShape& ball, sf::Vector2f& direction)
 {
+    int index = 0;
     int collisionResponse = 0;  // set to 1 for horizontal collision and 2 for vertical.
-    for (auto& brick : _bricks) {
-        if (!brick.getBounds().intersects(ball.getGlobalBounds())) continue;    // no collision, skip.
 
+    std::vector<int> explodedBricks;
+
+    for (auto& brick : _bricks)
+    {
+        index++;
+        if (!brick.getBounds().intersects(ball.getGlobalBounds())) continue;    // no collision, skip.
+        
         sf::Vector2f ballPosition = ball.getPosition();
         float ballY = ballPosition.y + 0.5f * ball.getGlobalBounds().height;
         sf::FloatRect brickBounds = brick.getBounds();
@@ -45,12 +51,33 @@ int BrickManager::checkCollision(sf::CircleShape& ball, sf::Vector2f& direction)
         if (ballY > brickBounds.top && ballY < brickBounds.top + brickBounds.height)
             // unless it's horizontal (collision from side)
             collisionResponse = 1;
-
+        
+     
         // Mark the brick as destroyed (for simplicity, let's just remove it from rendering)
         // In a complete implementation, you would set an _isDestroyed flag or remove it from the vector
         _gameManager->getSoundManager()->playSound(brickBreak); // Play brick breaking sound
         brick = _bricks.back();
         _bricks.pop_back();
+
+        if (_gameManager->getPowerupManager()->getPowerupInEffect().first == explosiveBall)
+        {
+            for (int j = 0; j < _bricks.size(); j++)
+            {
+                if (j == index) continue; // Is already hit brick
+
+                // Find distance between hit brick and brick indexed at j
+                float distanceBetweenBricks = sqrt(pow(brickBounds.top - _bricks[j].getBounds().top, 2) + pow(brickBounds.left - _bricks[j].getBounds().left, 2));
+
+                // If distance between hit brick and index j brick < 100 units
+                if (distanceBetweenBricks <= EXPLOSION_RADIUS)
+                {
+                    // Destroy brick
+                    _bricks[j] = _bricks.back();
+                    _bricks.pop_back();
+                    j--;
+                }
+            }
+        }
         break;
     }
     if (_bricks.size() == 0)
