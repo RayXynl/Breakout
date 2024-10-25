@@ -15,6 +15,11 @@ public:
     void setVelocity(float coeff, float duration);
     void setFireBall(float duration);
     void setRadius(float radius, float duration);
+
+    void paddleCollision(sf::CircleShape& sprite, sf::Vector2f& direction);
+    void boundaryCollision(sf::Vector2f position, sf::Vector2f& direction);
+    void brickCollision(sf::CircleShape sprite, sf::Vector2f& direction);
+
 private:
     sf::CircleShape _sprite;
     sf::Vector2f _direction;
@@ -28,8 +33,8 @@ private:
     GameManager* _gameManager;  // Reference to the GameManager
 
     std::vector<sf::CircleShape> _ballTrail;
-
-    static constexpr float RADIUS = 10.0f;      
+  
+    static constexpr float RADIUS = 10.0f;
     static constexpr float VELOCITY = 350.0f;   // for reference.
 };
 
